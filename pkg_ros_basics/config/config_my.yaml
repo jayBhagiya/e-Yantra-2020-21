@@ -1,0 +1,8 @@
+details:
+  name:
+    first: "Jay"  # First Name
+    last: "Bhagiya" # Last Name
+  
+  contact:
+    address: "XYZ Street, XYZ"  # Address
+    phone: 5252552    # Contact
