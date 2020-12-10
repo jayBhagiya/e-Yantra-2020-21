@@ -1,0 +1,20 @@
+<launch>
+
+	<!-- Launch UR5 in Gazebo -->
+	<include file="$(find pkg_vb_sim)/launch/gazebo_ur5_1.launch" />
+
+	<!-- Launch Moveit Group Node -->
+	<include file="$(find pkg_moveit_ur5_1)/launch/move_group.launch" />
+
+	<!-- Run Rviz and load the default config to see the state of the move_group node -->
+	<arg name="use_rviz" default="true" />
+
+	<include file="$(find pkg_moveit_ur5_1)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+		<arg name="rviz_config" value="$(find pkg_moveit_ur5_1)/launch/moveit.rviz" />
+	</include>
+
+	<!-- Add shelf to Moveit! planning Scene in Rviz -->
+	<arg name="scene_file" default="$(find pkg_t2_examples)/config/rviz/ur5_1_with_shelf.scene" />
+	<node name="moveit_publish_scene_from_text" pkg="moveit_ros_planning" type="moveit_publish_scene_from_text" args="$(arg scene_file)" />	
+
+</launch>
