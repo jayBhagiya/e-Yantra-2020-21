@@ -1,0 +1,23 @@
+<launch>
+
+    <!-- Launch Task-4 Simulation Environment in Gazebo -->
+    <include file="$(find pkg_vb_sim)/launch/task4_simulation.launch" />
+
+    <!-- Launch Task-4 Motion Planning in rviz -->
+    <include file="$(find pkg_vb_sim)/launch/two_ur5_move_group.launch" />
+
+    <!-- Running Nodes -->
+    <node name= "node_ur5_1_pick_place_action_server" pkg= "pkg_task4" type="node_ur5_1_pick_place_action_server.py" output="screen"/>
+    <node name= "node_ur5_2_pick_place_action_server" pkg= "pkg_task4" type="node_ur5_2_pick_place_action_server.py" output="screen"/>
+    <node name= "node_t4_action_client" pkg= "pkg_task4" type="node_t4_action_client.py" output="screen"/>
+
+    <!-- Recording Bag File for Submission -->
+    <arg name="record" default="false"/>
+    <arg name="rec_name" default="task4.bag"/>
+
+    <group if="$(arg record)">
+        <node name="rosbag_record_pick" pkg="rosbag" type="record"
+        args="record -O $(find pkg_task4)/bag_files/$(arg rec_name) --chunksize=10 /eyrc/vb/ur5_1/vacuum_gripper/logical_camera/ur5_1" output="screen"/>
+    </group>
+
+</launch>

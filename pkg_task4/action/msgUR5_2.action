@@ -1,0 +1,11 @@
+# goal
+float32 tl_x
+float32 tl_y
+float32 tl_z
+string pack_color
+---
+# result
+bool home_state
+---
+# feedback
+bool vg_state

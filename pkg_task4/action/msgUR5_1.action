@@ -1,0 +1,9 @@
+# goal
+int8 row
+int8 column
+---
+# result
+bool home_state
+---
+# feedback
+bool vg_state
