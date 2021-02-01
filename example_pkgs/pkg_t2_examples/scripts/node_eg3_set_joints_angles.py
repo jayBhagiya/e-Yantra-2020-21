@@ -29,10 +29,24 @@ class Ur5Moveit:
             'execute_trajectory', moveit_msgs.msg.ExecuteTrajectoryAction)
         self._exectute_trajectory_client.wait_for_server()
 
+        # self._robot_ns = '/ur5_1'
+        # self._planning_group = "manipulator"
+
+        # self._commander = moveit_commander.roscpp_initialize(sys.argv)
+        # self._robot = moveit_commander.RobotCommander(robot_description= self._robot_ns + "/robot_description", ns=self._robot_ns)
+        # self._scene = moveit_commander.PlanningSceneInterface(ns=self._robot_ns)
+        # self._group = moveit_commander.MoveGroupCommander(self._planning_group, 
+        #     robot_description= self._robot_ns + "/robot_description", ns=self._robot_ns)
+        # self._display_trajectory_publisher = rospy.Publisher( self._robot_ns + '/move_group/display_planned_path',
+        #     moveit_msgs.msg.DisplayTrajectory, queue_size=1)
+
+        # self._exectute_trajectory_client = actionlib.SimpleActionClient( self._robot_ns + 'execute_trajectory',
+        #     moveit_msgs.msg.ExecuteTrajectoryAction)
+        # self._exectute_trajectory_client.wait_for_server()
+
         self._planning_frame = self._group.get_planning_frame()
         self._eef_link = self._group.get_end_effector_link()
         self._group_names = self._robot.get_group_names()
-
 
         rospy.loginfo(
             '\033[94m' + "Planning Group: {}".format(self._planning_frame) + '\033[0m')
@@ -41,7 +55,7 @@ class Ur5Moveit:
         rospy.loginfo(
             '\033[94m' + "Group Names: {}".format(self._group_names) + '\033[0m')
 
-        rospy.loginfo('\033[94m' + " >>> Ur5Moveit init done." + '\033[0m')
+        rospy.loginfo('\033[94m' + ">>> Ur5Moveit init done." + '\033[0m')
 
     def set_joint_angles(self, arg_list_joint_angles):
 
@@ -82,34 +96,33 @@ def main():
 
     ur5 = Ur5Moveit()
 
-    lst_joint_angles_1 = [math.radians(180),
-                          math.radians(0),
-                          math.radians(0),
-                          math.radians(0),
-                          math.radians(0),
-                          math.radians(0)]
+    lst_joint_angles_1 = [math.radians(162),
+                          math.radians(-122),
+                          math.radians(20),
+                          math.radians(-81),
+                          math.radians(16),
+                          math.radians(1)]
 
-    lst_joint_angles_2 = [math.radians(133),
-                          math.radians(-59),
-                          math.radians(13),
-                          math.radians(-134),
-                          math.radians(47),
-                          math.radians(23)]
+    lst_joint_angles_2 = [math.radians(117),
+                          math.radians(-105),
+                          math.radians(5),
+                          math.radians(-79),
+                          math.radians(62),
+                          math.radians(90)]
 
-    lst_joint_angles_3 = [math.radians(-70),
-                          math.radians(-54),
-                          math.radians(-139),
-                          math.radians(-174),
-                          math.radians(9),
-                          math.radians(6)]
+    lst_joint_angles_3 = [math.radians(-161),
+                          math.radians(-77),
+                          math.radians(21),
+                          math.radians(-115),
+                          math.radians(-17),
+                          math.radians(-9)]
 
-    while not rospy.is_shutdown():
-        ur5.set_joint_angles(lst_joint_angles_1)
-        rospy.sleep(2)
-        ur5.set_joint_angles(lst_joint_angles_2)
-        rospy.sleep(2)
-        ur5.set_joint_angles(lst_joint_angles_3)
-        rospy.sleep(2)
+    ur5.set_joint_angles(lst_joint_angles_1)
+    rospy.sleep(2)
+    ur5.set_joint_angles(lst_joint_angles_2)
+    rospy.sleep(2)
+    ur5.set_joint_angles(lst_joint_angles_3)
+    rospy.sleep(2)
 
     del ur5
 

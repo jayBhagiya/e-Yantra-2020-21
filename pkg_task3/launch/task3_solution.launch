@@ -1,0 +1,21 @@
+<launch>
+    
+    <!-- Launch Task-3 Simulation Environment in Gazebo -->
+    <include file="$(find pkg_vb_sim)/launch/task3_simulation.launch" />
+
+    <!-- Main node which is doing all the task -->
+    <!-- <node name= "node_goto_tf_waypoints" pkg= "pkg_task3" type="node_goto_tf_waypoints.py" output="screen"/> -->
+    <node name= "node_ur5_pick_place_action_server" pkg= "pkg_task3" type="node_ur5_pick_place_action_server.py" output="screen"/>
+    <node name= "node_ur5_action_client" pkg= "pkg_task3" type="node_ur5_action_client.py" output="screen"/>
+
+    <!-- Launch Moveit Group Node -->
+    <include file = "$(find pkg_moveit_ur5_1)/launch/move_group.launch" /> 
+
+    <!-- Run RViz with Moveit! Pluging -->
+    <arg name="use_rviz" default="true" />
+
+    <include file="$(find pkg_moveit_ur5_1)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+        <arg name="rviz_config" value="$(find pkg_moveit_ur5_1)/launch/moveit.rviz"/>
+    </include>
+
+</launch>
