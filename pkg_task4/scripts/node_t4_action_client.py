@@ -226,30 +226,39 @@ class Camera1:
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("/eyrc/vb/camera_1/image_raw", Image, self.callback)
 
-        self._shelf_data = [[0 for x in range(3)] for x in range(4)] 
+        self._shelf_data = [[0 for x in range(3)] for x in range(4)]
 
     def get_dominant_colour(self, arg_img):
-        # setting values for base colors 
-        b = arg_img[:, :, 0] 
-        g = arg_img[:, :, 1] 
-        r = arg_img[:, :, 2] 
 
-        y = (b+g)/2
+        colors = {'yellow': ([15, 25, 0], [50, 255, 255]), 'green': ([40, 15, 0], [179, 255, 255]), 'red': ([0, 30, 0], [25, 255, 255])}
 
-        # computing the mean 
-        g_mean = int(np.mean(g))
-        r_mean = int(np.mean(r))
-        y_mean = int(np.mean(y))
+        flag = 0
 
-        # displaying the most prominent color 
-        if (g_mean > r_mean and g_mean > y_mean): 
-            return 'green'
-        elif (r_mean > g_mean and r_mean > y_mean):
-            return 'red'
-        elif (r_mean > y_mean and g_mean > y_mean): 
-            return 'yellow'
-        else: 
-            return 'none'
+        for color, (lower, upper) in colors.items():
+            lower = np.array(lower, dtype=np.uint8)
+            upper = np.array(upper, dtype=np.uint8)
+
+            hsv = cv2.cvtColor(arg_img, cv2.COLOR_BGR2HSV)
+            color_mask = cv2.inRange(hsv, lower, upper)
+            color_mask = cv2.merge([color_mask, color_mask, color_mask])
+
+            mask = np.zeros(arg_img.shape, dtype=np.uint8)
+            mask = cv2.bitwise_or(mask, color_mask)
+
+            gray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+            _, cnts, _ = cv2.findContours(gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+            if len(cnts) > 0:
+                flag = 1
+                # rospy.loginfo("color : {}".format(color))
+                # cv2.imshow('arg_img', arg_img)
+                # cv2.imshow('mask', mask)
+                # cv2.waitKey()
+                return color
+
+        if flag == 0:
+            # rospy.loginfo("color : None")
+            return 'None'
 
     def update_datasheet(self, image):
         start = [50, 150]
@@ -261,6 +270,7 @@ class Camera1:
 
         for row in range(4):
             y1 = start[1] + height_addition
+
             for col in range(3):
                 x1 = start[0] + width_addition
                 # print("[{}, {}]".format(row, col))
@@ -268,13 +278,11 @@ class Camera1:
                 new_img = image[y1:y1 + height, x1:x1 + width]
                 self._shelf_data[row][col] = self.get_dominant_colour(new_img)
                 width_addition += width
-                # cv2.imshow('image', new_img)
-                # cv2.waitKey()
+
             height_addition += height
             width_addition = 0
 
         # rospy.loginfo(self._shelf_data)
-        # return self._shelf_data
 
     def callback(self, data):
         try:
@@ -301,11 +309,11 @@ def main():
     ur5_1 = UR5_1_client()
     ur5_2 = UR5_2_client()
 
-    ic = Camera1()
-    shelf_data = ic._shelf_data
-
     rospy.loginfo('\033[96m' + "Starting in 5 seconds." + '\033[0m')
     rospy.sleep(5)
+
+    ic = Camera1()
+    shelf_data = ic._shelf_data
 
     new_color_data = [[0 for x in range(3)] for x in range(4)]
     num0 = 0
