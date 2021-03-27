@@ -12,6 +12,8 @@ The arena is an automated warehouse setting where essential packages are require
 [Task 1](https://github.com/jayBhagiya/e-Yantra-2020-21/tree/main/pkg_task1)<br>
 [Task 2](https://github.com/jayBhagiya/e-Yantra-2020-21/tree/main/pkg_task2)<br>
 [Task 3](https://github.com/jayBhagiya/e-Yantra-2020-21/tree/main/pkg_task3)<br>
+[Task 4](https://github.com/jayBhagiya/e-Yantra-2020-21/tree/main/pkg_task4)
+
 
 ## How to Replicate this Project
 
