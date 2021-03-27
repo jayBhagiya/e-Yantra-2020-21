@@ -8,13 +8,11 @@ The arena is an automated warehouse setting where essential packages are require
 
 ## Task wise Problem Statement and Outputs
 
-### Task 0 
-### Task 1
-### Task 2
-### Task 3
-### Task 4
-
-<br>
+[Task 0]()
+[Task 1]()
+[Task 2]()
+[Task 3]()
+[Task 4]()
 
 ## How to Replicate this Project
 
