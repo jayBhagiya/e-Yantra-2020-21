@@ -306,14 +306,16 @@ def main():
 
     rospy.init_node('node_t4_action_client')
 
-    ur5_1 = UR5_1_client()
-    ur5_2 = UR5_2_client()
-
-    rospy.loginfo('\033[96m' + "Starting in 5 seconds." + '\033[0m')
-    rospy.sleep(5)
-
     ic = Camera1()
     shelf_data = ic._shelf_data
+
+    rospy.loginfo('\033[96m' + "Starting in 10 seconds." + '\033[0m')
+    rospy.sleep(10)
+
+    rospy.loginfo("Color Data : {}".format(shelf_data))
+
+    ur5_1 = UR5_1_client()
+    ur5_2 = UR5_2_client()
 
     new_color_data = [[0 for x in range(3)] for x in range(4)]
     num0 = 0
@@ -321,8 +323,6 @@ def main():
         new_color_data[num0][i%3] = shelf_data[num0][i%3]
         if i%3 == 2:
             num0 += 1
-
-    rospy.loginfo("Color Data : {}".format(new_color_data))
 
     rospy.sleep(10)
 
