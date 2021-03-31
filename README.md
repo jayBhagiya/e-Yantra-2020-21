@@ -44,7 +44,7 @@ roslaunch pkg_task3 task3_solution.launch
 
 Now you will see the simulation of UR5 robotic arm in Gazebo and Rviz.
 
-Contributors 
+Contributors <br/>
 JEEL CHATROLA <br/>
 JAY BHAGIYA
 
